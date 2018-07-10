@@ -1,0 +1,26 @@
+{
+  "backgroundColor": [
+    "black",
+    "white",
+    "green",
+    "blue"
+  ],
+  "pattern": [
+    "plain",
+    "striped",
+    "spotted",
+    "patchy"
+  ],
+  "build": [
+    "slender",
+    "stocky",
+    "sporty",
+    "skinny"
+  ],
+  "size": [
+    "small",
+    "medium",
+    "large",
+    "enormous"
+  ]
+}
