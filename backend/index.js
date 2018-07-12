@@ -1,16 +1,9 @@
-const Dragon = require('./dragon');
+const GenerationEngine = require('./engine');
 
-const fooey = new Dragon({ birthdate: new Date(), nickname: 'fooey' });
-const baloo = new Dragon({
-  nickname: 'baloo',
-  birthdate: new Date(),
-  traits: {
-    backgroundColor: 'white',
-    pattern: 'patchy',
-    build: 'sporty',
-    size: 'large'
-  }
-});
+const engine = new GenerationEngine();
 
-console.log('fooey', fooey);
-console.log('baloo', baloo);
+engine.start();
+
+setTimeout(() => {
+  engine.stop();
+}, 20000);

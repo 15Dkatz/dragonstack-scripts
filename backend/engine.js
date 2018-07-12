@@ -1,0 +1,30 @@
+const Generation = require('./generation');
+
+// every application has some sort of machine-like quality to it... Well, here it is!
+class GenerationEngine {
+  constructor() {
+    this.generation = null;
+    this.timer = null;
+  }
+
+  start() {
+    this.buildNewGeneration();
+  }
+
+  stop() {
+    clearTimeout(this.timer);
+  }
+
+  buildNewGeneration() {
+    this.generation = new Generation();
+
+    console.log('new generation', this.generation);
+
+    this.timer = setTimeout(
+      () => this.buildNewGeneration(),
+      this.generation.expiration.getTime() - Date.now()
+    );
+  }
+}
+
+module.exports = GenerationEngine;
