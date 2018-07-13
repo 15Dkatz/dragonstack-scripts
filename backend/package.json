@@ -1,4 +1,4 @@
-  {
+{
   "name": "backend",
   "version": "1.0.0",
   "description": "",
@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^1.17.5"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
   }
 }

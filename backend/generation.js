@@ -5,6 +5,10 @@ const refreshRate = REFRESH_RATE * SECONDS;
 
 class Generation {
   constructor() {
+    this.expiration = this.calculateExpiration();
+  }
+
+  calculateExpiration() {
     const expirationPeriod = Math.floor(Math.random() * (refreshRate/2));
 
     // later on, this could take in more factors such as
@@ -14,7 +18,7 @@ class Generation {
       refreshRate - expirationPeriod :
       refreshRate + expirationPeriod;
 
-    this.expiration = new Date(Date.now() + msUntilExpiration);
+    return new Date(Date.now() + msUntilExpiration);
   }
 
   newDragon() {
