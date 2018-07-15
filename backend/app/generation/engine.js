@@ -1,4 +1,4 @@
-const Generation = require('./generation');
+const Generation = require('./index');
 
 // every application has some sort of machine-like quality to it... Well, here it is!
 class GenerationEngine {
