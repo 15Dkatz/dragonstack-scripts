@@ -17,16 +17,22 @@ class GenerationEngine {
   }
 
   buildNewGeneration() {
-    this.generation = new Generation();
+    const generation = new Generation();
 
-    GenerationTable.storeGeneration(this.generation);
+    GenerationTable.storeGeneration(generation)
+      .then(({ generationId }) => {
+        generation.setId(generationId);
 
-    console.log('new generation', this.generation);
+        this.generation = generation;
 
-    this.timer = setTimeout(
-      () => this.buildNewGeneration(),
-      this.generation.expiration.getTime() - Date.now()
-    );
+        console.log('new generation', this.generation);
+
+        this.timer = setTimeout(
+          () => this.buildNewGeneration(),
+          this.generation.expiration.getTime() - Date.now()
+        );
+      })
+      .catch(error => console.error(error));
   }
 }
 
