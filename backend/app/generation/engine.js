@@ -1,4 +1,5 @@
 const Generation = require('./index');
+const GenerationTable = require('./table');
 
 // every application has some sort of machine-like quality to it... Well, here it is!
 class GenerationEngine {
@@ -17,6 +18,8 @@ class GenerationEngine {
 
   buildNewGeneration() {
     this.generation = new Generation();
+
+    GenerationTable.storeGeneration(this.generation);
 
     console.log('new generation', this.generation);
 
