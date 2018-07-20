@@ -7,19 +7,19 @@ const DEFAULT_PROPERTIES = {
     return new Date()
   },
   get randomTraits() {
-    const traits = {};
+    const traits = [];
 
-    Object.keys(TRAITS).forEach(traitKey => {
-      const traitValues = TRAITS[traitKey];
+    Object.keys(TRAITS).forEach(TRAIT_KEY => {
+      const TRAIT_VALUES = TRAITS[TRAIT_KEY];
 
-      traits[traitKey] = traitValues[
-        Math.floor(Math.random() * traitValues.length)
-      ]
+      const traitValue = TRAIT_VALUES[Math.floor(Math.random() * TRAIT_VALUES.length)];
+
+      traits.push({ traitType: TRAIT_KEY, traitValue });
     });
 
     return traits;
   }
-};
+}
 
 class Dragon {
   constructor({ birthdate, nickname, traits, generationId } = {}) {
