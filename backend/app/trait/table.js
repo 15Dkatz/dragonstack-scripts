@@ -9,9 +9,7 @@ class TraitTable {
         (error, response) => {
           if (error) return reject(error);
 
-          const traitId = response.rows[0].id;
-
-          resolve({ traitId });
+          resolve({ traitId: response.rows[0].id });
         }
       )
     });
