@@ -8,7 +8,7 @@ router.get('/new', (req, res, next) => {
   const dragon = req.app.locals.engine.generation.newDragon();
 
   DragonTable.storeDragon(dragon)
-    .then(({dragonId}) => {
+    .then(({ dragonId }) => {
       console.log('dragonId', dragonId);
 
       res.json({ dragon });

@@ -15,13 +15,13 @@ class DragonTable {
 
           const dragonId = response.rows[0].id;
 
-          dragon.traits.forEach(({ traitType, traitValue }) => {
-            DragonTraitTable.storeDragonTrait({
+          Promise.all(dragon.traits.map(({ traitType, traitValue }) => {
+            return DragonTraitTable.storeDragonTrait({
               dragonId, traitType, traitValue
             })
-          });
-
-          resolve({ dragonId });
+          }))
+          .then(() => resolve({ dragonId }))
+          .catch(error => reject(error));
         }
       )
     });
