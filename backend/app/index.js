@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const GenerationEngine = require('./generation/engine');
 const dragonRouter = require('./api/dragon');
 const generationRouter = require('./api/generation');
@@ -6,10 +7,13 @@ const generationRouter = require('./api/generation');
 const app = express();
 const engine = new GenerationEngine();
 
+const origin = 'http://localhost:1234';
+
 engine.start();
 
 app.locals.engine = engine;
 
+app.use(cors({ origin }));
 app.use('/dragon', dragonRouter);
 app.use('/generation', generationRouter);
 
