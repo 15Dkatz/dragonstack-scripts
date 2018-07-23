@@ -6,13 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist .cache",
-    "start": "npm run clean && parcel index.html",
+    "start": "npm run clean && parcel src/index.html",
     "dev": "npm run start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "components": "^0.1.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
