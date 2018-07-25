@@ -10,6 +10,7 @@ router.get('/new', (req, res, next) => {
   DragonTable.storeDragon(dragon)
     .then(({ dragonId }) => {
       console.log('dragonId', dragonId);
+      dragon.dragonId = dragonId;
 
       res.json({ dragon });
     })
