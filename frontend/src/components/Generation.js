@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-
-const DEFAULT_GENERATION = { generationId: '', expiration: '' };
+import { connect } from 'react-redux';
+import { generationActionCreator } from '../actions/generation';
 
 const MINIMUM_DELAY = 3000; // milliseconds
 
 class Generation extends Component {
-  state = { generation: DEFAULT_GENERATION };
-
   timer = null;
 
   componentDidMount() {
@@ -18,19 +16,14 @@ class Generation extends Component {
   }
 
   fetchGeneration = () => {
-    fetch('http://localhost:3000/generation')
-      .then(response => response.json())
-      .then(json => {
-        this.setState({ generation: json.generation });
-      })
-      .catch(error => console.error(error));
+    this.props.fetchGeneration();
   };
 
   fetchNextGeneration() {
     this.fetchGeneration()
 
     let delay =
-      new Date(this.state.generation.expiration).getTime() -
+      new Date(this.props.generation.expiration).getTime() -
       new Date().getTime();
 
     if (delay < MINIMUM_DELAY) {
@@ -41,7 +34,9 @@ class Generation extends Component {
   }
 
   render() {
-    const { generation } = this.state;
+    const { generation } = this.props;
+
+    console.log('this.props', this.props);
 
     return (
       <div>
@@ -52,4 +47,32 @@ class Generation extends Component {
   }
 }
 
-export default Generation;
+const mapStateToProps = state => {
+  const generation = state.generation;
+
+  return { generation };
+};
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     // dispatchGeneration: generation => dispatch(
+//     //   generationActionCreator(generation)
+//     // ),
+//     fetchGeneration: () => fetchGeneration(dispatch)
+//   }
+// };
+
+const fetchGeneration = () => dispatch => {
+  return fetch('http://localhost:3000/generation')
+    .then(response => response.json())
+    .then(json => {
+      dispatch(generationActionCreator(json.generation));
+    });
+}
+
+const componentConnector = connect(
+  mapStateToProps,
+  { fetchGeneration }
+);
+
+export default componentConnector(Generation);
