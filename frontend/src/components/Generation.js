@@ -43,8 +43,6 @@ class Generation extends Component {
   render() {
     const { generation } = this.state;
 
-    console.log('generation', generation);
-
     return (
       <div>
         <h3>Generation {generation.generationId}. Expires on:</h3>
