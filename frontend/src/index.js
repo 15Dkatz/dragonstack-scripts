@@ -7,10 +7,10 @@ import Generation from './components/Generation';
 import Dragon from './components/Dragon';
 import './index.css';
 
-import { generationReducer } from './reducers';
+import rootReducer from './reducers';
 
 const store = createStore(
-  generationReducer,
+  rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(thunk)
 );
