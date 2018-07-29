@@ -2,26 +2,39 @@ const Session = require('../account/session');
 const AccountTable = require('../account/table');
 const { hash } = require('../account/helper');
 
-const setSession = ({ username, res }) => {
+const setSession = ({ username, res, sessionId }) => {
+  let session, sessionString;
+
   return new Promise((resolve, reject) => {
-    const session = new Session({ username });
+    if (sessionId) {
+      sessionString = Session.sessionString({ username, sessionId });
 
-    const sessionString = session.toString();
+      setSessionCookie({ sessionString, res });
 
-    AccountTable.updateSessionId({
-      sessionId: session.id,
-      usernameHash: hash(username)
-    })
-    .then(() => {
-      res.cookie('sessionString', sessionString, {
-        expire: Date.now() + 36000000,
-        httpOnly: true,
-        // secure: true // use with https
-      });
+      resolve({ message: 'session restored' });
+    } else {
+      session = new Session({ username });
+      sessionString = session.toString();
 
-      resolve({ message: 'session created' });
-    })
-    .catch(error => reject(error));
+      AccountTable.updateSessionId({
+        sessionId: session.id,
+        usernameHash: hash(username)
+      })
+      .then(() => {
+        setSessionCookie({ sessionString, res });
+
+        resolve({ message: 'session created' });
+      })
+      .catch(error => reject(error));
+    }
+  });
+};
+
+const setSessionCookie = ({ sessionString, res }) => {
+  res.cookie('sessionString', sessionString, {
+    expire: Date.now() + 3600000,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'PROD'
   });
 };
 
