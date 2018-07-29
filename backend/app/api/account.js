@@ -1,5 +1,7 @@
 const { Router } = require('express');
 const { hash } = require('../account/helper');
+const Session = require('../account/session');
+const { setSession } = require('./helper');
 const AccountTable = require('../account/table');
 
 const router = new Router();
@@ -22,7 +24,10 @@ router.post('/new', (req, res, next) => {
         throw error;
       }
     })
-    .then(() => res.json({ message: 'success!' }))
+    .then(() => {
+      return setSession({ username, res });
+    })
+    .then(({ message }) => res.json({ message }))
     .catch(error => next(error));
 });
 
