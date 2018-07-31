@@ -6,7 +6,7 @@ const AccountTable = require('../account/table');
 
 const router = new Router();
 
-router.post('/new', (req, res, next) => {
+router.post('/signup', (req, res, next) => {
   const { username, password } = req.body;
 
   const usernameHash = hash(username);

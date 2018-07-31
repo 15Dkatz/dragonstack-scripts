@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Button, FormGroup, FormControl } from 'react-bootstrap';
+import { signup } from '../actions/account';
+import fetchStates from '../reducers/fetchStates';
 
 class AuthForm extends Component {
   state = { username: '', password: '' };
@@ -13,12 +16,22 @@ class AuthForm extends Component {
   }
 
   signup = () => {
-    console.log('this.state', this.state);
+    const { username, password } = this.state;
+
+    this.props.signup({ username, password });
   }
 
   login = () => {
     console.log('this.state', this.state);
   }
+
+  get Error() {
+    if (this.props.account.status === fetchStates.error) {
+      return <div>{this.props.account.message}</div>
+    }
+  }
+
+  // TODO: turn into a getter
 
   render() {
     return (
@@ -45,11 +58,16 @@ class AuthForm extends Component {
           <span> or </span>
           <Button onClick={this.signup}>Sign Up</Button>
         </div>
+        <br />
+        {this.Error}
       </div>
     );
   }
 }
 
-export default AuthForm;
+export default connect(
+  ({ account }) => ({ account }),
+  { signup }
+)(AuthForm);
 
 // export default connect(({ account }) => ({ account }), null)(Root);

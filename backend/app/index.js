@@ -10,13 +10,11 @@ const generationRouter = require('./api/generation');
 const app = express();
 const engine = new GenerationEngine();
 
-const origin = 'http://localhost:1234';
-
 engine.start();
 
 app.locals.engine = engine;
 
-app.use(cors({ origin }));
+app.use(cors({ origin: 'http://localhost:1234', credentials: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/account', accountRouter);
