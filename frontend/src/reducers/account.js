@@ -13,6 +13,8 @@ const account = (state = DEFAULT_ACCOUNT, action) => {
     case ACCOUNT.FETCH_SUCCESS:
       // can't spread the action. Don't want the action type
       return { ...state, status: fetchStates.success, message: action.message, loggedIn: true };
+    case ACCOUNT.FETCH_LOGOUT_SUCCESS:
+      return { ...state, status: fetchStates.success, message: action.message, loggedIn: false };
     default:
       return state;
   };

@@ -66,5 +66,24 @@ router.get('/logout', (req, res, next) => {
     }).catch(error => next(error));
 });
 
+router.get('/authenticated', (req, res, next) => {
+  const { sessionString } = req.cookies;
+
+  if (!sessionString) {
+    return res.status(400).json({ authenticated: false });
+  }
+
+  const { username, id } = Session.parse(sessionString);
+
+  AccountTable.getAccount({ usernameHash: hash(username) })
+    .then(({ account }) => {
+      const authenticated = Session.verify(sessionString) &&
+        account.sessionId === id;
+
+      // if authenticated is false, account should be undefined anyway
+      res.json({ account, authenticated });
+    })
+    .catch(error => next(error));
+});
 
 module.exports = router;
