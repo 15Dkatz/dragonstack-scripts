@@ -6,6 +6,9 @@ class Session {
   constructor({ username }) {
     this.username = username;
     this.id = uuid();
+
+    // TODO: backfill changes and scripts to turn this.id to this.sessionId.
+    // will make things far simpler...
   }
 
   toString() {
@@ -20,6 +23,8 @@ class Session {
 
   static sessionString({ username, id }) {
     const accountData = Session.accountData({ username, id });
+
+    console.log('')
 
     return `${accountData}${SEPARATOR}${hash(accountData)}`;
   }

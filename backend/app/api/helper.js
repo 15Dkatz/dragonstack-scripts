@@ -7,7 +7,7 @@ const setSession = ({ username, res, sessionId }) => {
 
   return new Promise((resolve, reject) => {
     if (sessionId) {
-      sessionString = Session.sessionString({ username, sessionId });
+      sessionString = Session.sessionString({ username, id: sessionId });
 
       setSessionCookie({ sessionString, res });
 

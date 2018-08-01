@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import './index.css';
 
+import { fetchAuthenticated } from './actions/account';
+
 import Root from './components/Root';
 
 import rootReducer from './reducers';
@@ -15,9 +17,15 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
-render(
-  <Provider store={store}>
-    <Root />
-  </Provider>,
-  document.getElementById('root')
-);
+console.log('store.dispatch', store.dispatch);
+
+store.dispatch(fetchAuthenticated())
+  .then(() => {
+    console.log('store.getState()', store.getState());
+    render(
+      <Provider store={store}>
+        <Root />
+      </Provider>,
+      document.getElementById('root')
+    );
+  });

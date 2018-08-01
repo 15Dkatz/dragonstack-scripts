@@ -70,8 +70,12 @@ router.get('/authenticated', (req, res, next) => {
   const { sessionString } = req.cookies;
 
   if (!sessionString) {
-    return res.status(400).json({ authenticated: false });
-  }
+    return res.status(400).json({
+      type: 'error',
+      authenticated: false,
+      message: 'Invalid session'
+    });
+  } 
 
   const { username, id } = Session.parse(sessionString);
 
@@ -81,7 +85,7 @@ router.get('/authenticated', (req, res, next) => {
         account.sessionId === id;
 
       // if authenticated is false, account should be undefined anyway
-      res.json({ account, authenticated });
+      res.json({ authenticated });
     })
     .catch(error => next(error));
 });
