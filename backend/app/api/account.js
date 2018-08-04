@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { hash } = require('../account/helper');
 const Session = require('../account/session');
-const { setSession } = require('./helper');
+const { setSession, authenticatedAccount } = require('./helper');
 const AccountTable = require('../account/table');
 
 const router = new Router();
@@ -53,7 +53,7 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/logout', (req, res, next) => {
-  const { username, id } = Session.parse(req.cookies.sessionString);
+  const { username } = Session.parse(req.cookies.sessionString);
 
   AccountTable.updateSessionId({
     sessionId: null,
@@ -67,27 +67,34 @@ router.get('/logout', (req, res, next) => {
 });
 
 router.get('/authenticated', (req, res, next) => {
-  const { sessionString } = req.cookies;
-
-  if (!sessionString) {
-    return res.status(400).json({
-      type: 'error',
-      authenticated: false,
-      message: 'Invalid session'
-    });
-  } 
-
-  const { username, id } = Session.parse(sessionString);
-
-  AccountTable.getAccount({ usernameHash: hash(username) })
-    .then(({ account }) => {
-      const authenticated = Session.verify(sessionString) &&
-        account.sessionId === id;
-
-      // if authenticated is false, account should be undefined anyway
+  authenticatedAccount({ sessionString: req.cookies.sessionString })
+    .then(({ authenticated }) => {
       res.json({ authenticated });
     })
     .catch(error => next(error));
 });
+
+// router.get('/authenticated', (req, res, next) => {
+//   const { sessionString } = req.cookies;
+
+//   if (!sessionString || Session.verify(sessionString)) {
+//     const error = new Error('Invalid session');
+
+//     error.statusCode = 400;
+
+//     return next(error);
+//   }
+
+//   const { username, id } = Session.parse(sessionString);
+
+//   AccountTable.getAccount({ usernameHash: hash(username) })
+//     .then(({ account }) => {
+//       const authenticated = account.sessionId === id;
+
+//       // if authenticated is false, account should be undefined anyway
+//       res.json({ authenticated });
+//     })
+//     .catch(error => next(error));
+// });
 
 module.exports = router;
