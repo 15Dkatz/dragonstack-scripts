@@ -17,11 +17,8 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
-console.log('store.dispatch', store.dispatch);
-
 store.dispatch(fetchAuthenticated())
   .then(() => {
-    console.log('store.getState()', store.getState());
     render(
       <Provider store={store}>
         <Root />

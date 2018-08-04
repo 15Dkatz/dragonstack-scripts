@@ -3,6 +3,8 @@ const { hash } = require('../account/helper');
 const Session = require('../account/session');
 const { setSession, authenticatedAccount } = require('./helper');
 const AccountTable = require('../account/table');
+const AccountDragonTable = require('../accountDragon/table');
+const { getDragonWithTraits } = require('../dragon/helper');
 
 const router = new Router();
 
@@ -74,27 +76,47 @@ router.get('/authenticated', (req, res, next) => {
     .catch(error => next(error));
 });
 
-// router.get('/authenticated', (req, res, next) => {
-//   const { sessionString } = req.cookies;
+router.get('/dragons', (req, res, next) => {
+  authenticatedAccount({ sessionString: req.cookies.sessionString })
+    .then(({ account }) => {
+      return AccountDragonTable.getAccountDragons({
+        accountId: account.id
+      });
+    })
+    .then(({ accountDragons }) => {
+      return Promise.all(
+        accountDragons.map(accountDragon => {
+          return getDragonWithTraits({
+            dragonId: accountDragon.dragonId
+          });
+        })
+      );
+    })
+    .then(dragons => {
+      res.json({ dragons });
+    })
+    .catch(error => next(error));
 
-//   if (!sessionString || Session.verify(sessionString)) {
-//     const error = new Error('Invalid session');
 
-//     error.statusCode = 400;
+    // .then(({ accountDragons }) => {
+    //   // TODO: use the console.logs for scripts
+    //   // Turn this into a challenge! Tough one...
+    //   console.log('accountDragons', accountDragons);
 
-//     return next(error);
-//   }
 
-//   const { username, id } = Session.parse(sessionString);
-
-//   AccountTable.getAccount({ usernameHash: hash(username) })
-//     .then(({ account }) => {
-//       const authenticated = account.sessionId === id;
-
-//       // if authenticated is false, account should be undefined anyway
-//       res.json({ authenticated });
-//     })
-//     .catch(error => next(error));
-// });
+    //   return Promise.all(
+    //     accountDragons.map(accountDragon => {
+    //       return getDragonWithTraits({
+    //         dragonId: accountDragon.dragonId
+    //       });
+    //     })
+    //   );
+    // })
+    // .then(dragons => {
+    //   console.log('dragons', dragons);
+    //   res.json({ dragons });
+    // })
+    // .catch(error => next(error));
+});
 
 module.exports = router;

@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import { logout } from '../actions/account';
 import Generation from './Generation';
 import Dragon from './Dragon';
+import AccountDragons from './AccountDragons';
 
 class Home extends Component {
   render() {
@@ -15,6 +16,8 @@ class Home extends Component {
         <h2>Dragon Stack</h2>
         <Generation />
         <Dragon />
+        <br />
+        <AccountDragons />
       </div>
     );
   }
