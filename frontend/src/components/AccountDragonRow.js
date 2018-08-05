@@ -27,15 +27,15 @@ class AccountDragonRow extends Component {
   // state can start as props... Nov 17, '17
   state = {
     nickname: this.props.dragon.nickname,
-    edit: false,
-    saving: false
+    edit: false
+    // saving: false
   }
 
   toggleEdit = () => {
     this.setState({ edit: !this.state.edit });
   }
 
-  updateNickname = () => event => {
+  updateNickname = event => {
     this.setState({ nickname: event.target.value });
   }
 
@@ -43,7 +43,7 @@ class AccountDragonRow extends Component {
   // and the fetch isn't returning new information
   // You get the udpates on subsequent loads of the page. And the state is localized.
   save = () => {
-    this.setState({ saving: true });
+    // this.setState({ saving: true });
 
     fetch(`${BACKEND.ADDRESS}/dragon/update`, {
       method: 'POST',
@@ -56,7 +56,7 @@ class AccountDragonRow extends Component {
         if (json.type === 'error') {
           alert(json.message)
         } else {
-          this.setState({ saving: false });
+          // this.setState({ saving: false });
           this.toggleEdit();
         }
       })
@@ -66,11 +66,12 @@ class AccountDragonRow extends Component {
   // getters return the value without needing the function call, meaning no parentheses
   // TODO: wait so how does this automatically get called? without the final parentheses?
   get SaveButton() {
-    return (
-      <Button onClick={this.save}>
-        { this.state.saving ? '...'  : 'Save' }
-      </Button>
-    )
+    return <Button onClick={this.save}>Save</Button>;
+    // return (
+    //   <Button onClick={this.save}>
+    //     { this.state.saving ? '...'  : 'Save' }
+    //   </Button>
+    // )
   }
 
   get EditButton() {
@@ -81,17 +82,12 @@ class AccountDragonRow extends Component {
     return (
       <div>
         <div>
-          {/* The idea is that the more crypric the better... */}
-          {/* In the backend we want to be simple */}
-          {/* For the app we want to be mysterious... */}
-          <span>
-            <input
-              type='text'
-              disabled={!this.state.edit}
-              value={this.state.nickname}
-              onChange={this.updateNickname}
-            />
-          </span>{' '}
+          <input
+            type='text'
+            disabled={!this.state.edit}
+            value={this.state.nickname}
+            onChange={this.updateNickname}
+          />
         </div>
         <br />
         <DragonAvatar dragon={this.props.dragon} />
