@@ -54,7 +54,7 @@ const authenticatedAccount = ({ sessionString }) => {
       .then(({ account }) => {
         const authenticated = account.sessionId === id;
 
-        resolve({ authenticated, account });
+        resolve({ authenticated, account, username });
       })
       .catch(error => reject(error));
   });

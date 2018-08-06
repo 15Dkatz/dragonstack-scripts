@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchGeneration } from '../actions/generation';
-import fetchStates from '../reducers/fetchStates';
+// import fetchStates from '../reducers/fetchStates';
 
 const MINIMUM_DELAY = 3000; // milliseconds
 

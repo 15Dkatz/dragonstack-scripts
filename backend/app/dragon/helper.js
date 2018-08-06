@@ -4,7 +4,7 @@ const getDragonWithTraits = ({ dragonId }) => {
   return Promise.all([
     new Promise((resolve, reject) => {
       pool.query(
-        `SELECT birthdate, nickname, "generationId"
+        `SELECT birthdate, nickname, "generationId", "isPublic", "saleValue"
         FROM dragon
         WHERE dragon.id = $1`,
         [dragonId],

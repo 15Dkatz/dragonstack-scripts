@@ -96,27 +96,14 @@ router.get('/dragons', (req, res, next) => {
       res.json({ dragons });
     })
     .catch(error => next(error));
-
-
-    // .then(({ accountDragons }) => {
-    //   // TODO: use the console.logs for scripts
-    //   // Turn this into a challenge! Tough one...
-    //   console.log('accountDragons', accountDragons);
-
-
-    //   return Promise.all(
-    //     accountDragons.map(accountDragon => {
-    //       return getDragonWithTraits({
-    //         dragonId: accountDragon.dragonId
-    //       });
-    //     })
-    //   );
-    // })
-    // .then(dragons => {
-    //   console.log('dragons', dragons);
-    //   res.json({ dragons });
-    // })
-    // .catch(error => next(error));
 });
+
+router.get('/info', (req, res, next) => {
+  authenticatedAccount({ sessionString: req.cookies.sessionString })
+    .then(({ account, username }) => {
+      res.json({ info: { username, balance: account.balance } });
+    })
+    .catch(error => next(error));
+})
 
 module.exports = router;
