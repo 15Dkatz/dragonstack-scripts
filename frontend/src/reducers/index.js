@@ -4,11 +4,13 @@ import generation from './generation';
 import dragon from './dragon';
 import accountDragons from './accountDragons';
 import accountInfo from './accountInfo';
+import publicDragons from './publicDragons';
 
 export default combineReducers({
   account,
   generation,
   dragon,
   accountDragons,
-  accountInfo
+  accountInfo,
+  publicDragons
 });

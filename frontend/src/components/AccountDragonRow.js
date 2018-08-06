@@ -1,22 +1,3 @@
-// import React, { Component } from 'react';
-// import DragonAvatar from './DragonAvatar';
-
-// class AccountDragonRow extends Component {
-//   render() {
-//     return (
-//       <div>
-//         <div>{this.props.dragon.nickname}</div>
-//         <br />
-//         <DragonAvatar dragon={this.props.dragon} />
-//       </div>
-//     )
-//   }
-// }
-
-// export default AccountDragonRow;
-
-// TODO: New backend to update the nickname at /update
-
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import DragonAvatar from './DragonAvatar';
@@ -27,8 +8,9 @@ class AccountDragonRow extends Component {
   // state can start as props... Nov 17, '17
   state = {
     nickname: this.props.dragon.nickname,
+    saleValue: this.props.dragon.saleValue,
+    isPublic: this.props.dragon.isPublic,
     edit: false
-    // saving: false
   }
 
   toggleEdit = () => {
@@ -39,39 +21,37 @@ class AccountDragonRow extends Component {
     this.setState({ nickname: event.target.value });
   }
 
-  // it's ok not to have this in the reducer. The state is local
-  // and the fetch isn't returning new information
-  // You get the udpates on subsequent loads of the page. And the state is localized.
-  save = () => {
-    // this.setState({ saving: true });
+  updateSaleValue = event => {
+    this.setState({ saleValue: event.target.value });
+  }
 
+  updateIsPublic = event => {
+    this.setState({ isPublic: event.target.checked });
+  }
+
+  save = () => {
     fetch(`${BACKEND.ADDRESS}/dragon/update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        dragonId: this.props.dragon.dragonId, nickname: this.state.nickname
+        dragonId: this.props.dragon.dragonId,
+        nickname: this.state.nickname,
+        saleValue: this.state.saleValue,
+        isPublic: this.state.isPublic
       })
     }).then(response => response.json())
       .then(json => {
         if (json.type === 'error') {
           alert(json.message)
         } else {
-          // this.setState({ saving: false });
           this.toggleEdit();
         }
       })
       .catch(error => alert(error));
   }
 
-  // getters return the value without needing the function call, meaning no parentheses
-  // TODO: wait so how does this automatically get called? without the final parentheses?
   get SaveButton() {
     return <Button onClick={this.save}>Save</Button>;
-    // return (
-    //   <Button onClick={this.save}>
-    //     { this.state.saving ? '...'  : 'Save' }
-    //   </Button>
-    // )
   }
 
   get EditButton() {
@@ -91,9 +71,33 @@ class AccountDragonRow extends Component {
         </div>
         <br />
         <DragonAvatar dragon={this.props.dragon} />
-        {
-          this.state.edit ? this.SaveButton : this.EditButton
-        }
+        <div>
+          <span>
+            Sale Value:{' '}
+            <input
+              type='number'
+              // className='account-dragon-row-input'
+              disabled={!this.state.edit}
+              value={this.state.saleValue}
+              onChange={this.updateSaleValue}
+            />
+          </span>
+          {' '}
+          <span>
+            Public:{' '}
+            <input
+              type='checkbox'
+              // className='account-dragon-row-input'
+              disabled={!this.state.edit}
+              checked={this.state.isPublic}
+              onChange={this.updateIsPublic}
+            />
+          </span>
+          {' '}
+          {
+            this.state.edit ? this.SaveButton : this.EditButton
+          }
+        </div>
       </div>
     )
   }

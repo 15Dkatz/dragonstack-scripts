@@ -1,5 +1,6 @@
 const pool = require('../../databasePool');
 const DragonTraitTable = require('../dragonTrait/table');
+const { getDragonWithTraits } = require('./helper');
 
 class DragonTable {
   static storeDragon(dragon) {
@@ -37,14 +38,37 @@ class DragonTable {
     return new Promise((resolve, reject) => {
       pool.query(
         `UPDATE dragon SET nickname = $1, "isPublic" = $2, "saleValue" = $3
-        WHERE id = $2`,
-        [nickname, dragonId, isPublic, saleValue],
+        WHERE id = $4`,
+        [nickname, isPublic, saleValue, dragonId],
         (error, response) => {
           if (error) return reject(error);
 
           resolve();
         }
       );
+    });
+  }
+
+  static getPublicDragons() {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        'SELECT id FROM dragon WHERE "isPublic" = TRUE',
+        (error, response) => {
+          if (error) return reject(error);
+
+          const publicDragonRows = response.rows;
+
+          publicDragonRows.map(({ id }) => getDragonWithTraits({ dragonId: id }));
+
+          Promise.all(
+            publicDragonRows.map(
+              ({ id }) => getDragonWithTraits({ dragonId: id })
+            )
+          )
+          .then(dragons => resolve({ dragons }))
+          .catch(error => reject(error));
+        }
+      )
     });
   }
 }

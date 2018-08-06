@@ -31,10 +31,16 @@ router.get('/new', (req, res, next) => {
 });
 
 router.post('/update', (req, res, next) => {
-  const { dragonId, nickname } = req.body;
+  const { dragonId, nickname, isPublic, saleValue } = req.body;
 
-  DragonTable.updateDragon({ dragonId, nickname })
+  DragonTable.updateDragon({ dragonId, nickname, isPublic, saleValue })
     .then(() => res.json({ message: 'successfully updated dragon' }))
+    .catch(error => next(error));
+});
+
+router.get('/public-dragons', (req, res, next) => {
+  DragonTable.getPublicDragons()
+    .then(({ dragons }) => res.json({ dragons }))
     .catch(error => next(error));
 });
 
