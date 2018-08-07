@@ -34,6 +34,12 @@ class DragonTable {
   // parse one level above, in the route, and still pass all thse values
   // const { nickname, saleValue, sireValue, isPublic } = settings.
   // so the passed object would be { dragonId, nickname, saleValue, sireValue, isPublic }
+
+
+  // TODO: need to make this dynamic. Update the fields if present...
+  // if defined...
+
+  // not as powerful as we need it to be
   static updateDragon({ dragonId, nickname, isPublic, saleValue }) {
     return new Promise((resolve, reject) => {
       pool.query(
