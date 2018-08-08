@@ -3,6 +3,7 @@ const DragonTable = require('../dragon/table');
 const AccountTable = require('../account/table');
 const AccountDragonTable = require('../accountDragon/table');
 const { authenticatedAccount } = require('./helper');
+const { getPublicDragons } = require('../dragon/helper');
 
 const router = new Router();
 
@@ -40,7 +41,7 @@ router.post('/update', (req, res, next) => {
 });
 
 router.get('/public-dragons', (req, res, next) => {
-  DragonTable.getPublicDragons()
+  getPublicDragons()
     .then(({ dragons }) => res.json({ dragons }))
     .catch(error => next(error));
 });
@@ -53,6 +54,10 @@ router.post('/buy', (req, res, next) => {
     .then(dragon => {
       if (dragon.saleValue !== saleValue) {
         throw new Error('Sale value is not correct')
+      }
+
+      if (!dragon.isPublic) {
+        throw new Error('Dragon must be public')
       }
 
       return authenticatedAccount({ sessionString: req.cookies.sessionString })
