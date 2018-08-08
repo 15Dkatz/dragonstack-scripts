@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const DragonTable = require('../dragon/table');
+const AccountTable = require('../account/table');
 const AccountDragonTable = require('../accountDragon/table');
 const { authenticatedAccount } = require('./helper');
 
@@ -48,12 +49,21 @@ router.post('/buy', (req, res, next) => {
   const { dragonId, saleValue } = req.body;
   let buyerId;
 
-  authenticatedAccount({ sessionString: req.cookies.sessionString })
+  DragonTable.getDragon({ dragonId })
+    .then(dragon => {
+      if (dragon.saleValue !== saleValue) {
+        throw new Error('Sale value is not correct')
+      }
+
+      return authenticatedAccount({ sessionString: req.cookies.sessionString })
+    })
     .then(({ account, authenticated }) => {
       // needed because the authenticatedAccount helper rejects invalid session strings
       // but a valid session string may be still be unauthenticated
       // and authenticatedAccount will return authenticated: false in that case
-      if (!authenticated) throw new Error('Unauthenticated');
+      if (!authenticated) {
+        throw new Error('Unauthenticated')
+      };
 
       if (saleValue > account.balance) {
         throw new Error('Sale value exceeds balance');

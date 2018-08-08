@@ -61,9 +61,4 @@ class AccountTable {
   }
 }
 
-AccountTable.updateBalance({ accountId: 1, value: 1000000 })
-  .then(() => console.log('update occurred!'))
-  .catch(error => console.log('error', error));
-
-
 module.exports = AccountTable;

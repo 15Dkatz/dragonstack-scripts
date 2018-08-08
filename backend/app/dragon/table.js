@@ -28,31 +28,45 @@ class DragonTable {
     });
   }
 
-  // TODO: Extend this to be literal, don't use settings?
-  // Try the above, and if there's too much of the hacky logic, favor the more literal implementation
-  // still group settings on the frontend. But parse the settings on the backend here
-  // parse one level above, in the route, and still pass all thse values
-  // const { nickname, saleValue, sireValue, isPublic } = settings.
-  // so the passed object would be { dragonId, nickname, saleValue, sireValue, isPublic }
-
-
-  // TODO: need to make this dynamic. Update the fields if present...
-  // if defined...
-
-  // not as powerful as we need it to be
-  static updateDragon({ dragonId, nickname, isPublic, saleValue }) {
+  static getDragon({ dragonId }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `UPDATE dragon SET nickname = $1, "isPublic" = $2, "saleValue" = $3
-        WHERE id = $4`,
-        [nickname, isPublic, saleValue, dragonId],
+        `SELECT birthdate, nickname, "generationId", "isPublic", "saleValue"
+        FROM dragon
+        WHERE dragon.id = $1`,
+        [dragonId],
         (error, response) => {
           if (error) return reject(error);
 
-          resolve();
+          if (response.rows.length === 0) return reject(new Error('no dragon'));
+
+          resolve(response.rows[0]);
         }
-      );
+      )
     });
+  }
+
+  static updateDragon({ dragonId, nickname, isPublic, saleValue }) {
+    const settingsMap = { nickname, isPublic, saleValue };
+
+    const validQueries = Object.entries(settingsMap).filter(([settingKey, settingValue]) => {
+      if (settingValue !== undefined) {
+        return new Promise((resolve, reject) => {
+          pool.query(
+            // this is ok since we trust our own settingKey values from the settingsMap
+            `UPDATE dragon SET "${settingKey}" = $1 WHERE id = $2`,
+            [settingValue, dragonId],
+            (error, response) => {
+              if (error) return reject(error);
+
+              resolve();
+            }
+          );
+        });
+      }
+    });
+
+    return Promise.all(validQueries);
   }
 
   static getPublicDragons() {

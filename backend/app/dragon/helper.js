@@ -1,22 +1,9 @@
+const DragonTable = require('./table');
 const pool = require('../../databasePool');
 
 const getDragonWithTraits = ({ dragonId }) => {
   return Promise.all([
-    new Promise((resolve, reject) => {
-      pool.query(
-        `SELECT birthdate, nickname, "generationId", "isPublic", "saleValue"
-        FROM dragon
-        WHERE dragon.id = $1`,
-        [dragonId],
-        (error, response) => {
-          if (error) return reject(error);
-
-          if (response.rows.length === 0) return reject(new Error('no dragon'));
-
-          resolve(response.rows[0]);
-        }
-      )
-    }),
+    DragonTable.getDragon({ dragonId }),
     new Promise((resolve, reject) => {
       pool.query(
         `SELECT "traitType", "traitValue"
