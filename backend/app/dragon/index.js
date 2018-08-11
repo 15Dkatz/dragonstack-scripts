@@ -12,12 +12,15 @@ const DEFAULT_PROPERTIES = {
   get randomTraits() {
     const traits = [];
 
-    Object.keys(TRAITS).forEach(TRAIT_KEY => {
-      const TRAIT_VALUES = TRAITS[TRAIT_KEY];
+    TRAITS.forEach(TRAIT => {
+      const traitType = TRAIT.type;
+      const traitValues = TRAIT.values;
 
-      const traitValue = TRAIT_VALUES[Math.floor(Math.random() * TRAIT_VALUES.length)];
+      const traitValue = traitValues[
+        Math.floor(Math.random() * traitValues.length)
+      ];
 
-      traits.push({ traitType: TRAIT_KEY, traitValue });
+      traits.push({ traitType, traitValue });
     });
 
     return traits;

@@ -1,8 +1,9 @@
 const pool = require('../databasePool');
-const traits = require('../data/traits');
+const TRAITS = require('../data/traits');
 
-Object.keys(traits).forEach(traitType => {
-  const traitValues = traits[traitType];
+TRAITS.forEach(TRAIT => {
+  const traitType = TRAIT.type;
+  const traitValues = TRAIT.values;
 
   traitValues.forEach(traitValue => {
     pool.query(

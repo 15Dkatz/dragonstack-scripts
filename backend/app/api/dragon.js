@@ -3,12 +3,13 @@ const DragonTable = require('../dragon/table');
 const AccountTable = require('../account/table');
 const AccountDragonTable = require('../accountDragon/table');
 const { authenticatedAccount } = require('./helper');
-const { getPublicDragons } = require('../dragon/helper');
+const { getPublicDragons, getDragonWithTraits } = require('../dragon/helper');
+const Breeder = require('../dragon/breeder');
 
 const router = new Router();
 
 router.get('/new', (req, res, next) => {
-  let accountId, dragon, dragonId;
+  let accountId, dragon;
 
   authenticatedAccount({ sessionString: req.cookies.sessionString })
     .then(({ account }) => {
@@ -33,9 +34,9 @@ router.get('/new', (req, res, next) => {
 });
 
 router.post('/update', (req, res, next) => {
-  const { dragonId, nickname, isPublic, saleValue } = req.body;
+  const { dragonId, nickname, isPublic, saleValue, sireValue } = req.body;
 
-  DragonTable.updateDragon({ dragonId, nickname, isPublic, saleValue })
+  DragonTable.updateDragon({ dragonId, nickname, isPublic, saleValue, sireValue })
     .then(() => res.json({ message: 'successfully updated dragon' }))
     .catch(error => next(error));
 });

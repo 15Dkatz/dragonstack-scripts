@@ -1,26 +1,38 @@
-{
-  "backgroundColor": [
-    "black",
-    "white",
-    "green",
-    "blue"
-  ],
-  "pattern": [
-    "plain",
-    "striped",
-    "spotted",
-    "patchy"
-  ],
-  "build": [
-    "slender",
-    "stocky",
-    "sporty",
-    "skinny"
-  ],
-  "size": [
-    "small",
-    "medium",
-    "large",
-    "enormous"
-  ]
-}
+[
+  {
+    "type": "backgroundColor",
+    "values": [
+      "black",
+      "white",
+      "green",
+      "blue"
+    ]
+  },
+  {
+    "type": "pattern",
+    "values": [
+      "plain",
+      "striped",
+      "spotted",
+      "patchy"
+    ]
+  },
+  {
+    "type": "build",
+    "values": [
+      "slender",
+      "stocky",
+      "sporty",
+      "skinny"
+    ]
+  },
+  {
+    "type": "size",
+    "values": [
+      "small",
+      "medium",
+      "large",
+      "enormous"
+    ]
+  }
+]

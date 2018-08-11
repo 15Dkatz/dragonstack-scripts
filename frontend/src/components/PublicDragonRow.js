@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import DragonAvatar from './DragonAvatar';
 import { Button } from 'react-bootstrap';
+import MatingOptions from './MatingOptions';
 
 import { BACKEND } from '../config';
 import history from '../history';
 
 class PublicDragonRow extends Component {
+  state = { displayMatingOptions: false };
+
   buy = () => {
     const { dragonId, saleValue } = this.props.dragon;
 
@@ -27,6 +30,10 @@ class PublicDragonRow extends Component {
       .catch(error => alert(error.message));
   }
 
+  toggleDisplayMatingOptions = () => this.setState({
+    displayMatingOptions: !this.state.displayMatingOptions
+  })
+
   render() {
     return (
       <div>
@@ -35,10 +42,24 @@ class PublicDragonRow extends Component {
         </div>
         <DragonAvatar dragon={this.props.dragon} />
         <div>
-          Sale Value: {this.props.dragon.saleValue}
+          <span>
+            Sale Value: {this.props.dragon.saleValue}
+          </span>{' | '}
+          <span>
+            Sire Value: {this.props.dragon.sireValue}
+          </span>
         </div>
         <br />
-        <Button onClick={this.buy}>Buy</Button>
+        <div>
+          <Button onClick={this.buy}>Buy</Button>{' '}
+          <Button onClick={this.toggleDisplayMatingOptions}>Sire</Button>{' '}
+        </div>
+        <br />
+        {
+          this.state.displayMatingOptions ?
+            <MatingOptions patronDragonId={this.props.dragon.dragonId} /> :
+            <div></div>
+        }
       </div>
     )
   }
