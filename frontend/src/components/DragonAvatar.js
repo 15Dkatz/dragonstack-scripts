@@ -3,15 +3,6 @@ import { dragonSkinny, dragonSlender, dragonSporty, dragonStocky } from '../asse
 
 // Call object collections map, to distinguish between arrays
 const dragonTraitStyleMap = {
-  size: {
-    styleName: "width",
-    valueMap: {
-      small: 140,
-      medium: 160,
-      large: 180,
-      enormous: 200
-    }
-  },
   backgroundColor: {
     styleName: "backgroundColor",
     valueMap: {
@@ -19,6 +10,15 @@ const dragonTraitStyleMap = {
       white: "#cfd8dc",
       green: "#2e7d32",
       blue: "#0277bd"
+    }
+  },
+  size: {
+    styleName: "width",
+    valueMap: {
+      small: 140,
+      medium: 160,
+      large: 180,
+      enormous: 200
     }
   }
 }
@@ -33,12 +33,11 @@ const dragonImageMap = {
 // TODO: make the pattern a picture that uses the overlay style
 class DragonAvatar extends Component {
   get DragonImage() {
+    const imageStyle = {};
     let imageSrc;
-    const styleMap = {};
 
     this.props.dragon.traits.forEach(trait => {
-      const traitType = trait.traitType;
-      const traitValue = trait.traitValue;
+      const { traitType, traitValue } = trait;
 
       if (traitType === 'build') {
         imageSrc = dragonImageMap[traitValue];
@@ -47,11 +46,15 @@ class DragonAvatar extends Component {
       if (traitType === 'size' || traitType === 'backgroundColor') {
         const dragonTraitStyle = dragonTraitStyleMap[traitType];
 
-        styleMap[dragonTraitStyle.styleName] = dragonTraitStyle.valueMap[traitValue];
+        imageStyle[dragonTraitStyle.styleName] = dragonTraitStyle.valueMap[traitValue];
       }
     });
 
-    return <img src={imageSrc} style={styleMap}/>;
+    return (
+      <div className='dragon-avatar-image-wrapper'>
+        <img src={imageSrc} style={imageStyle} />
+      </div>
+    );
   }
 
   render() {
@@ -63,9 +66,7 @@ class DragonAvatar extends Component {
       <div className='dragon-avatar'>
         <span>G{generationId}.I{dragonId}.</span>
         { traits.map(trait => trait.traitValue).join(', ') }
-        <div className='dragon-avatar-image-wrapper'>
-          {this.DragonImage}
-        </div>
+        { this.DragonImage }
       </div>
     );
   }
