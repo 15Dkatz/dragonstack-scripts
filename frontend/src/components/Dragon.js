@@ -10,6 +10,7 @@ class Dragon extends Component {
       <div>
         <Button onClick={this.props.fetchDragon}>New Dragon</Button>
         <br />
+        <br />
         <DragonAvatar dragon={this.props.dragon} />
       </div>
     )
