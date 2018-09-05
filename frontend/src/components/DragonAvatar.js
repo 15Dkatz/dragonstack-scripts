@@ -1,58 +1,42 @@
 import React, { Component } from 'react';
-import { dragonSkinny, dragonSlender, dragonSporty, dragonStocky } from '../assets';
+import { skinny, slender, sporty, stocky, patchy, plain, spotted, striped } from '../assets';
 
 // Call object collections map, to distinguish between arrays
-const dragonTraitStyleMap = {
+const dragonTraitPropertyMap = {
   backgroundColor: {
-    styleName: "backgroundColor",
-    valueMap: {
-      black: "#212121",
-      white: "#cfd8dc",
-      green: "#2e7d32",
-      blue: "#0277bd"
-    }
+    black: "#263238",
+    white: "#cfd8dc",
+    green: "#a5d6a7",
+    blue: "#0277bd"
   },
-  size: {
-    styleName: "width",
-    valueMap: {
-      small: 140,
-      medium: 160,
-      large: 180,
-      enormous: 200
-    }
-  }
-}
-
-const dragonImageMap = {
-  slender: dragonSlender,
-  stocky: dragonStocky,
-  sporty: dragonSporty,
-  skinny: dragonSkinny
+  build: { slender, stocky, sporty, skinny },
+  pattern: { plain, striped, spotted, patchy },
+  size: { small: 100, medium: 140, large: 180, enormous: 220 }
 }
 
 // TODO: make the pattern a picture that uses the overlay style
 class DragonAvatar extends Component {
   get DragonImage() {
-    const imageStyle = {};
-    let imageSrc;
+    // not really a styling. Since it can be a style or an image
+    // Therefore, property is a good name
+    const propertyMap = {};
 
     this.props.dragon.traits.forEach(trait => {
       const { traitType, traitValue } = trait;
 
-      if (traitType === 'build') {
-        imageSrc = dragonImageMap[traitValue];
-      }
-
-      if (traitType === 'size' || traitType === 'backgroundColor') {
-        const dragonTraitStyle = dragonTraitStyleMap[traitType];
-
-        imageStyle[dragonTraitStyle.styleName] = dragonTraitStyle.valueMap[traitValue];
-      }
+      propertyMap[traitType] = dragonTraitPropertyMap[traitType][traitValue];
     });
+
+    console.log('propertyMap', propertyMap);
+
+    const { backgroundColor, build, pattern, size } = propertyMap;
+    const sizing = { width: size, height: size };
 
     return (
       <div className='dragon-avatar-image-wrapper'>
-        <img src={imageSrc} style={imageStyle} />
+        <img src={build} className='dragon-avatar-image' style={sizing}/>
+        <img src={pattern} className='dragon-avatar-image-pattern' style={sizing} />
+        <div className='dragon-avatar-image-background' style={{ backgroundColor, ...sizing }}></div>
       </div>
     );
   }

@@ -1,11 +1,10 @@
-import dragonSkinny from './dragon_skinny.png';
-import dragonSlender from './dragon_slender.png';
-import dragonSporty from './dragon_sporty.png';
-import dragonStocky from './dragon_stocky.png';
+import skinny from './skinny.png';
+import slender from './slender.png';
+import sporty from './sporty.png';
+import stocky from './stocky.png';
+import patchy from './patchy.png';
+import plain from './plain.png';
+import spotted from './spotted.png';
+import striped from './striped.png';
 
-export {
-  dragonSkinny,
-  dragonSlender,
-  dragonSporty,
-  dragonStocky
-};
+export { skinny, slender, sporty, stocky, patchy, plain, spotted, striped };

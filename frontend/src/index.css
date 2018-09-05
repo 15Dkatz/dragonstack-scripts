@@ -26,6 +26,21 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 200px;
-  height: 200px;
+  height: 220px;
+}
+
+.dragon-avatar-image {
+  z-index: 0;
+}
+
+.dragon-avatar-image-pattern {
+  position: absolute;
+  height: 220px;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.dragon-avatar-image-background {
+  position: absolute;
+  z-index: -2;
 }
