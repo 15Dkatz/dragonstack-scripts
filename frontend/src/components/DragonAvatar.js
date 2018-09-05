@@ -11,10 +11,9 @@ const dragonTraitPropertyMap = {
   },
   build: { slender, stocky, sporty, skinny },
   pattern: { plain, striped, spotted, patchy },
-  size: { small: 100, medium: 140, large: 180, enormous: 220 }
+  size: { small: 140, medium: 170, large: 200, enormous: 230 }
 }
 
-// TODO: make the pattern a picture that uses the overlay style
 class DragonAvatar extends Component {
   get DragonImage() {
     // not really a styling. Since it can be a style or an image
@@ -27,16 +26,14 @@ class DragonAvatar extends Component {
       propertyMap[traitType] = dragonTraitPropertyMap[traitType][traitValue];
     });
 
-    console.log('propertyMap', propertyMap);
-
     const { backgroundColor, build, pattern, size } = propertyMap;
     const sizing = { width: size, height: size };
 
     return (
       <div className='dragon-avatar-image-wrapper'>
-        <img src={build} className='dragon-avatar-image' style={sizing}/>
-        <img src={pattern} className='dragon-avatar-image-pattern' style={sizing} />
         <div className='dragon-avatar-image-background' style={{ backgroundColor, ...sizing }}></div>
+        <img src={pattern} className='dragon-avatar-image-pattern' style={{ ...sizing }}/>
+        <img src={build} className='dragon-avatar-image' style={{ ...sizing }}/>
       </div>
     );
   }
@@ -47,8 +44,9 @@ class DragonAvatar extends Component {
     if (!dragonId) return <div></div>;
 
     return (
-      <div className='dragon-avatar'>
-        <span>G{generationId}.I{dragonId}.</span>
+      <div>
+        <span>G{generationId}.</span>
+        <span>I{dragonId}. </span>
         { traits.map(trait => trait.traitValue).join(', ') }
         { this.DragonImage }
       </div>

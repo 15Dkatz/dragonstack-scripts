@@ -16,17 +16,10 @@ body {
   margin-right: 15px;
 }
 
-.dragon-avatar {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
 .dragon-avatar-image-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 220px;
 }
 
 .dragon-avatar-image {
@@ -35,12 +28,8 @@ body {
 
 .dragon-avatar-image-pattern {
   position: absolute;
-  height: 220px;
-  opacity: 0.5;
-  z-index: -1;
 }
 
 .dragon-avatar-image-background {
   position: absolute;
-  z-index: -2;
 }
